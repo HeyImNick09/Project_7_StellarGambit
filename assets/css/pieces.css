@@ -1,0 +1,259 @@
+/* Chess Pieces - Space Theme Styles */
+
+.chess-piece {
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-normal);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    position: relative;
+    z-index: 3;
+}
+
+.chess-piece:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+}
+
+.chess-piece.selected {
+    transform: scale(1.2);
+    filter: 
+        drop-shadow(0 0 10px var(--accent-cyan))
+        drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+    animation: selectedGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes selectedGlow {
+    0% { 
+        filter: 
+            drop-shadow(0 0 10px var(--accent-cyan))
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+    }
+    100% { 
+        filter: 
+            drop-shadow(0 0 20px var(--accent-purple))
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+    }
+}
+
+/* White Pieces (Federation Fleet) */
+.piece-white {
+    color: #e2e8f0;
+    text-shadow: 
+        0 0 10px rgba(226, 232, 240, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Black Pieces (Empire Armada) */
+.piece-black {
+    color: #1e293b;
+    text-shadow: 
+        0 0 10px rgba(30, 41, 59, 0.8),
+        0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Traditional Chess Pieces */
+
+/* White Pieces */
+.piece-king.piece-white::before { content: '♔'; }
+.piece-queen.piece-white::before { content: '♕'; }
+.piece-rook.piece-white::before { content: '♖'; }
+.piece-bishop.piece-white::before { content: '♗'; }
+.piece-knight.piece-white::before { content: '♘'; }
+.piece-pawn.piece-white::before { content: '♙'; }
+
+/* Black Pieces */
+.piece-king.piece-black::before { content: '♚'; }
+.piece-queen.piece-black::before { content: '♛'; }
+.piece-rook.piece-black::before { content: '♜'; }
+.piece-bishop.piece-black::before { content: '♝'; }
+.piece-knight.piece-black::before { content: '♞'; }
+.piece-pawn.piece-black::before { content: '♟'; }
+
+/* Piece Animation States */
+.piece-moving {
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.piece-captured {
+    animation: captureExplosion 0.6s ease-out forwards;
+}
+
+@keyframes captureExplosion {
+    0% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    25% { 
+        transform: scale(1.5) rotate(90deg);
+        opacity: 0.8;
+    }
+    50% { 
+        transform: scale(2) rotate(180deg);
+        opacity: 0.5;
+    }
+    75% { 
+        transform: scale(1.5) rotate(270deg);
+        opacity: 0.2;
+    }
+    100% { 
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.piece-promoted {
+    animation: promotionTransform 1s ease-out;
+}
+
+@keyframes promotionTransform {
+    0% { 
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    25% { 
+        transform: scale(0.5);
+        filter: brightness(2);
+    }
+    50% { 
+        transform: scale(1.5) rotateY(180deg);
+        filter: brightness(3) hue-rotate(180deg);
+    }
+    75% { 
+        transform: scale(1.2) rotateY(360deg);
+        filter: brightness(2);
+    }
+    100% { 
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* Special Effect Overlays */
+.piece-check-threat::after {
+    content: '⚠️';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1rem;
+    animation: warningPulse 1s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+.piece-defended::after {
+    content: '🛡️';
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.piece-pinned::after {
+    content: '📌';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    font-size: 0.8rem;
+    animation: pinIndicator 2s ease-in-out infinite;
+}
+
+@keyframes pinIndicator {
+    0%, 100% { 
+        opacity: 0.6;
+        transform: rotate(0deg);
+    }
+    50% { 
+        opacity: 1;
+        transform: rotate(15deg);
+    }
+}
+
+/* Drag and Drop States */
+.piece-dragging {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(5deg);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.piece-ghost {
+    opacity: 0.3;
+    transform: scale(0.9);
+}
+
+/* Theme Variations */
+.theme-classic .chess-piece {
+    font-family: 'Chess', serif;
+}
+
+.theme-neon .chess-piece {
+    filter: 
+        drop-shadow(0 0 5px currentColor)
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.theme-neon .piece-white {
+    color: var(--accent-cyan);
+    text-shadow: 0 0 15px var(--accent-cyan);
+}
+
+.theme-neon .piece-black {
+    color: var(--accent-purple);
+    text-shadow: 0 0 15px var(--accent-purple);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .chess-piece,
+    .piece-moving,
+    .piece-selected {
+        animation: none;
+        transition: none;
+    }
+    
+    .chess-piece:hover {
+        transform: none;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .piece-white {
+        color: #ffffff;
+        text-shadow: 2px 2px 0 #000000;
+    }
+    
+    .piece-black {
+        color: #000000;
+        text-shadow: 2px 2px 0 #ffffff;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .chess-piece {
+        font-size: 2.5rem;
+    }
+    
+    .chess-piece:hover {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 480px) {
+    .chess-piece {
+        font-size: 2rem;
+    }
+}
